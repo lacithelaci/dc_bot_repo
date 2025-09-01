@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import random
+from keep_alive import keep_alive  # keep-alive import
 
 # ---------- webscraper ----------
 def get_daily_text():
@@ -19,12 +20,11 @@ def get_daily_text():
     text_parts = []
     for element in soup.find_all(["p", "hr"]):
         if element.name == "hr":
-            break  # megállunk az első <hr> előtt
+            break
         text_parts.append(element.get_text(strip=True))
 
     text = "\n\n".join(text_parts) if text_parts else "Nincs találat."
-    return text, url  # visszaadjuk a szöveget és a linket
-# ---------- vége ----------
+    return text, url
 
 # ---------- bot setup ----------
 load_dotenv()
@@ -363,9 +363,9 @@ async def akasztofa(ctx):
     else:
         await ctx.send(f"Vesztettél! A szó a(z) '{cel_szo}' volt.")
 
-from keep_alive import keep_alive
-
-keep_alive()
-bot.run(TOKEN)
+# ---------- fő program ----------
+if __name__ == "__main__":
+    keep_alive()   # Flask webserver indítása külön szálon
+    bot.run(TOKEN) # Bot indítása a fő szálon
 
 
