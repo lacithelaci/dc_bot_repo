@@ -363,23 +363,25 @@ async def akasztofa(ctx):
     else:
         await ctx.send(f"Vesztettél! A szó a(z) '{cel_szo}' volt.")
 
-from threading import Thread
-from flask import Flask
-import os
+if __name__ == "__main__":
+    from threading import Thread
+    from flask import Flask
+    import os
 
-app = Flask('')
+    app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Bot fut rendesen 🚀"
+    @app.route('/')
+    def home():
+        return "Bot fut rendesen 🚀"
 
-def run_web():
-    port = int(os.getenv("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    def run_web():
+        port = int(os.getenv("PORT", 5000))
+        app.run(host="0.0.0.0", port=port)
 
-# külön szálon indítjuk a webservert
-t = Thread(target=run_web)
-t.start()
+    # indítjuk a flask szervert külön szálon
+    t = Thread(target=run_web)
+    t.start()
 
-# ---------- futtatás ----------
-bot.run(TOKEN)
+    # és végül indítjuk a botot
+    bot.run(TOKEN)
+
